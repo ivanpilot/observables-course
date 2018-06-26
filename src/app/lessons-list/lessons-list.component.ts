@@ -1,12 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { 
-  globalEventBus,
-  Observer,
-  ADD_NEW_LESSON,
-  LESSONS_LIST_AVAILABLE
-} from '../event-bus-experiments/event-bus';
 import * as _ from 'lodash';
 import { Lesson } from '../shared/model/lesson';
+import { Observer, store } from '../event-bus-experiments/app-data'
 
 @Component({
   selector: 'lessons-list',
@@ -15,42 +10,37 @@ import { Lesson } from '../shared/model/lesson';
 })
 export class LessonsListComponent implements OnInit, Observer {
   lessons: Lesson[] = []
-  // counter: number = 0
 
-  constructor() { 
-    console.log('Lesson-list component is registering as an observer...')
-    globalEventBus.registerObserver(LESSONS_LIST_AVAILABLE, this)
-    globalEventBus.registerObserver(ADD_NEW_LESSON, {
-      notify: lessonText => {
-        this.lessons.push({
-          id: Math.random(),
-          description: lessonText
-        })
-      }
-    })
-  }
-  
-  // ngDoCheck() {
-  //   // debugger
-  //   this.counter += 1
-  //   console.log('lesson-list has been triggered ' + this.counter + ' times so far.' )
+  // constructor() { 
+  //   console.log('Lesson-list component is registering as an observer...')
+  //   LessonsList$.subscribe(this)
   // }
-
+  // ngDoCheck(){
+  //   console.log('Is the lessons from STORE === lessons from LessonList?')
+  //   console.log(this.lessons === store.getData())
+  //   console.log('CHECKING LESSONS VALUE FROM THE STORE...')
+  //   console.log(store.getData())
+  //   console.log('CHECKING LESSONS VALUE FROM THE LESSONLIST...')
+  //   console.log(this.lessons)
+  // }
+  
   ngOnInit() {
+    // store.LessonsList$.subscribe(this)
+    store.subscribe(this)
   }
 
-  notify(data: Lesson[]){
-    console.log('inside lesson-list notify')
+  next(data: Lesson[]){
     console.log('lesson-list component receiving data: ', data)
-    this.lessons = data.slice(0)
+    this.lessons = data
   }
 
   toggleLessonViewed(lesson: Lesson){
     console.log('toggling lesson ...');
-    lesson.completed = !lesson.completed;
+    // lesson.completed = !lesson.completed;
+    store.toggleLessonViewed(lesson)
   }
 
   delete(deleted: Lesson){
-    _.remove(this.lessons, lesson => lesson.id === deleted.id )
+    store.deleteLesson(deleted)
   }
 }

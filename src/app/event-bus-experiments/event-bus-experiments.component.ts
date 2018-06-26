@@ -1,11 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { 
-  globalEventBus,
-  LESSONS_LIST_AVAILABLE,
-  ADD_NEW_LESSON 
-} from './event-bus';
 import { testLessons } from '../shared/model/test-lessons';
 import { Lesson } from '../shared/model/lesson';
+import { store } from './app-data'
 
 @Component({
   selector: 'event-bus-experiments',
@@ -13,37 +9,31 @@ import { Lesson } from '../shared/model/lesson';
   styleUrls: ['./event-bus-experiments.component.css']
 })
 export class EventBusExperimentsComponent implements OnInit {
-  private lessons: Lesson[] = []
-  // counter: number = 0
 
   constructor() {
   }
 
-
-  // ngDoCheck() {
-  //   // debugger
-  //   this.counter += 1
-  //   console.log('event bus has been triggered ' + this.counter + ' times so far.' )
-  // }
-  
   ngOnInit() {
     console.log('Broadcasting lessons to all observers')
-    this.lessons = testLessons.slice(0)
 
-    globalEventBus.notifyObservers(LESSONS_LIST_AVAILABLE, this.lessons)
-  
+    store.initializeLessonsList(testLessons.slice(0))
+
     setTimeout(() => {
-      console.log('now inside setTimeout...')
-      this.lessons.push({
+      const newLesson = {
         id: Math.random(),
         description: 'New lesson arriving from back end'
-      });
-      globalEventBus.notifyObservers(LESSONS_LIST_AVAILABLE, this.lessons)
+      };
+      store.addLesson(newLesson)
     }, 4000)
   }
 
   addLesson(lessonText: string){
     console.log('adding a new lesson: ', lessonText)
-    globalEventBus.notifyObservers(ADD_NEW_LESSON, lessonText)
-  }
+    
+    const newLesson = {
+      id: Math.random(),
+      description: lessonText
+    };
+    store.addLesson(newLesson)
+}
 }
