@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { testLessons } from '../shared/model/test-lessons';
-import { Lesson } from '../shared/model/lesson';
+// import { Lesson } from '../shared/model/lesson';
 import { store } from './app-data'
 
 @Component({

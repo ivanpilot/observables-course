@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import * as _ from 'lodash';
+// import * as _ from 'lodash';
 import { Lesson } from '../shared/model/lesson';
 import { Observer, store } from '../event-bus-experiments/app-data'
 
@@ -10,19 +10,6 @@ import { Observer, store } from '../event-bus-experiments/app-data'
 })
 export class LessonsListComponent implements OnInit, Observer {
   lessons: Lesson[] = []
-
-  // constructor() { 
-  //   console.log('Lesson-list component is registering as an observer...')
-  //   LessonsList$.subscribe(this)
-  // }
-  // ngDoCheck(){
-  //   console.log('Is the lessons from STORE === lessons from LessonList?')
-  //   console.log(this.lessons === store.getData())
-  //   console.log('CHECKING LESSONS VALUE FROM THE STORE...')
-  //   console.log(store.getData())
-  //   console.log('CHECKING LESSONS VALUE FROM THE LESSONLIST...')
-  //   console.log(this.lessons)
-  // }
   
   ngOnInit() {
     // store.LessonsList$.subscribe(this)

@@ -29,23 +29,6 @@ class SubjectImplementation implements Subject {
   
 }
 
-// const lessonsListSubject = new SubjectImplementation()
-
-// export let LessonsList$: Observable = {
-//   subscribe: obs => {
-//     lessonsListSubject.subscribe(obs)
-//     obs.next(lessons)
-//   },
-//   unsubscribe: obs => lessonsListSubject.unsubscribe(obs)  
-// } 
-
-// let lessons: Lesson[] = []
-
-// export function initializeLessonsList(newList: Lesson[]) {
-//   lessons = _.cloneDeep(newList)
-//   lessonsListSubject.next(lessons)
-// }
-
 class DataStore implements Observable{
   private lessons: Lesson[] = []
   private lessonsListSubject = new SubjectImplementation()
@@ -67,16 +50,13 @@ class DataStore implements Observable{
     this.lessonsListSubject.unsubscribe(obs)
   }
 
-
   initializeLessonsList(newList: Lesson[]) {
     this.lessons = _.cloneDeep(newList)
-    // this.lessonsListSubject.next(this.lessons)
     this.broadcast()
   }
   
   addLesson(newLesson: Lesson) {
     this.lessons.push(_.cloneDeep(newLesson))
-    // this.lessonsListSubject.next(this.lessons)
     this.broadcast()
   }
 
@@ -88,18 +68,16 @@ class DataStore implements Observable{
   toggleLessonViewed(toggled: Lesson){
     const lesson = _.find(this.lessons, lesson => lesson.id === toggled.id)
     lesson.completed = !lesson.completed
-    // debugger
     this.broadcast()
   }
 
   broadcast(){
     this.lessonsListSubject.next(_.cloneDeep(this.lessons))
-    // debugger
   }
 
-  getData(){
-    return this.lessons
-  }
+  // getData(){
+  //   return this.lessons
+  // }
 }
 
 export const store = new DataStore()
