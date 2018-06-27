@@ -1,19 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 // import * as _ from 'lodash';
 import { Lesson } from '../shared/model/lesson';
-import { Observer, store } from '../event-bus-experiments/app-data'
+import { store } from '../event-bus-experiments/app-data';
+import { Observer } from 'rxjs';
 
 @Component({
   selector: 'lessons-list',
   templateUrl: './lessons-list.component.html',
   styleUrls: ['./lessons-list.component.css']
 })
-export class LessonsListComponent implements OnInit, Observer {
+export class LessonsListComponent implements OnInit, Observer<Lesson[]> {
   lessons: Lesson[] = []
   
   ngOnInit() {
+    // debugger
     // store.LessonsList$.subscribe(this)
-    store.subscribe(this)
+    store.lessonsList$.subscribe(this)
   }
 
   next(data: Lesson[]){
@@ -21,6 +23,14 @@ export class LessonsListComponent implements OnInit, Observer {
     this.lessons = data
   }
 
+  error(err: any){
+    console.error(err)
+  }
+
+  complete(){
+    console.log('completed')
+  }
+  
   toggleLessonViewed(lesson: Lesson){
     console.log('toggling lesson ...');
     // lesson.completed = !lesson.completed;
