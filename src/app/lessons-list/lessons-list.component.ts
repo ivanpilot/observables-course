@@ -18,7 +18,11 @@ export class LessonsListComponent implements OnInit, Observer<Lesson[]> {
     store.lessonsList$.subscribe(this)
   }
 
-  next(data: Lesson[]){
+  // next(data: Lesson[]){
+  //   console.log('lesson-list component receiving data: ', data)
+  //   this.lessons = data
+  // }
+  next = (data: Lesson[]) => {
     console.log('lesson-list component receiving data: ', data)
     this.lessons = data
   }

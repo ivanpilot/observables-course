@@ -31,26 +31,9 @@ import { Observer, Subject, Observable, BehaviorSubject } from 'rxjs';
 
 class DataStore {
   // private lessons: Lesson[] = []
-  private lessonsListSubject = new BehaviorSubject([])
+  private lessonsListSubject = new BehaviorSubject<Lesson[]>([])
   
   public lessonsList$: Observable<Lesson[]> = this.lessonsListSubject.asObservable();
- 
-  // public LessonsList$: Observable = {
-  //   subscribe: obs => {
-  //     this.lessonsListSubject.subscribe(obs)
-  //     obs.next(this.lessons)
-  //   },
-  //   unsubscribe: obs => this.lessonsListSubject.unsubscribe(obs)  
-  // } 
-
-  // subscribe(obs: Observer) {
-  //   this.lessonsListSubject.subscribe(obs)
-  //   obs.next(this.lessons)
-  // }
-
-  // unsubscribe(obs: Observer) {
-  //   this.lessonsListSubject.unsubscribe(obs)
-  // }
 
   initializeLessonsList(newList: Lesson[]) {
     this.lessonsListSubject.next(_.cloneDeep(newList))

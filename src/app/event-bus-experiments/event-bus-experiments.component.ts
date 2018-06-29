@@ -35,5 +35,5 @@ export class EventBusExperimentsComponent implements OnInit {
       description: lessonText
     };
     store.addLesson(newLesson)
-}
+  }
 }
