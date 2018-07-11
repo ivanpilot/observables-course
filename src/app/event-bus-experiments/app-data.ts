@@ -30,48 +30,65 @@ import { Observer, Subject, Observable, BehaviorSubject } from 'rxjs';
 // }
 
 class DataStore {
-  // private lessons: Lesson[] = []
+  private lessons: Lesson[] = []
   private lessonsListSubject = new BehaviorSubject<Lesson[]>([])
   
   public lessonsList$: Observable<Lesson[]> = this.lessonsListSubject.asObservable();
+ 
+  // public LessonsList$: Observable = {
+  //   subscribe: obs => {
+  //     this.lessonsListSubject.subscribe(obs)
+  //     obs.next(this.lessons)
+  //   },
+  //   unsubscribe: obs => this.lessonsListSubject.unsubscribe(obs)  
+  // } 
+
+  // subscribe(obs: Observer) {
+  //   this.lessonsListSubject.subscribe(obs)
+  //   obs.next(this.lessons)
+  // }
+
+  // unsubscribe(obs: Observer) {
+  //   this.lessonsListSubject.unsubscribe(obs)
+  // }
 
   initializeLessonsList(newList: Lesson[]) {
-    this.lessonsListSubject.next(_.cloneDeep(newList))
-    // this.lessons = _.cloneDeep(newList)
-    // this.broadcast()
+    // this.lessonsListSubject.next(_.cloneDeep(newList))
+    this.lessons = _.cloneDeep(newList)
+    this.broadcast()
   }
   
   addLesson(newLesson: Lesson) {
-    const lessons = this.cloneLessons()
-    lessons.push(_.cloneDeep(newLesson))
-    this.lessonsListSubject.next(lessons)
+    // const lessons = this.cloneLessons()
+    // lessons.push(_.cloneDeep(newLesson))
+    // this.lessonsListSubject.next(lessons)
     
-    // this.lessons.push(_.cloneDeep(newLesson))
-    // this.broadcast()
+    this.lessons.push(_.cloneDeep(newLesson))
+    this.broadcast()
   }
   
   deleteLesson(deleted: Lesson){
-    const lessons = this.cloneLessons()
-    _.remove(lessons, lesson => lesson.id === deleted.id)
-    this.lessonsListSubject.next(lessons)
-    // _.remove(this.lessons, lesson => lesson.id === deleted.id)
-    // this.broadcast()
+    // const lessons = this.cloneLessons()
+    // _.remove(lessons, lesson => lesson.id === deleted.id)
+    // this.lessonsListSubject.next(lessons)
+    _.remove(this.lessons, lesson => lesson.id === deleted.id)
+    this.broadcast()
   }
 
   toggleLessonViewed(toggled: Lesson){
-    const lessons = this.cloneLessons()
-    const lesson = _.find(lessons, lesson => lesson.id === toggled.id)
-    lesson.completed = !lesson.completed
-    this.lessonsListSubject.next(lessons)
-
-    // const lesson = _.find(this.lessons, lesson => lesson.id === toggled.id)
+    // const lessons = this.cloneLessons()
+    // const lesson = _.find(lessons, lesson => lesson.id === toggled.id)
     // lesson.completed = !lesson.completed
-    // this.broadcast()
+    // this.lessonsListSubject.next(lessons)
+
+    const lesson = _.find(this.lessons, lesson => lesson.id === toggled.id)
+    lesson.completed = !lesson.completed
+    this.broadcast()
   }
 
-  // broadcast(){
-  //   this.lessonsListSubject.next(_.cloneDeep(this.lessons))
-  // }
+  broadcast(){
+    this.lessonsListSubject.next(_.cloneDeep(this.lessons))
+  }
 
   // getData(){
   //   return this.lessons
